@@ -63,7 +63,7 @@ h1{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,4vw,34px);m
 .group-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 h2{font-family:var(--f-display);font-size:19px;margin:0;font-weight:700}
 .note{font-family:var(--f-body);font-size:12.5px;font-weight:400;color:var(--muted);margin-left:6px;letter-spacing:.04em}
-.mono svg{display:block;width:100%;height:100%}
+.mono svg{display:block;width:100%;height:100%;text-transform:none}
 .empty{border:2px dashed var(--line);border-radius:20px;padding:36px 20px;text-align:center;color:var(--muted);line-height:1.7}
 .empty strong{color:var(--fg);font-family:var(--f-display);font-size:20px;display:block;margin-bottom:4px}
 
@@ -98,6 +98,11 @@ h2{font-family:var(--f-display);font-size:19px;margin:0;font-weight:700}
     <div id="shared" class="grid"></div>
   </section>
 
+  <section class="group" aria-labelledby="h-other">
+    <h2 id="h-other">其他</h2>
+    <div id="others" class="grid"></div>
+  </section>
+
   <section class="group" id="mine" hidden aria-labelledby="h-mine">
     <div class="group-head">
       <h2 id="h-mine">我加的網站 <span class="note">只存在這台裝置</span></h2>
@@ -120,7 +125,7 @@ h2{font-family:var(--f-display);font-size:19px;margin:0;font-weight:700}
 <script>
 (function(){
   const $ = s => document.querySelector(s);
-  const grid=$('#grid'), shared=$('#shared'), mine=$('#mine'), msg=$('#msg'), editBtn=$('#editBtn'), picker=$('#picker');
+  const grid=$('#grid'), shared=$('#shared'), others=$('#others'), mine=$('#mine'), msg=$('#msg'), editBtn=$('#editBtn'), picker=$('#picker');
 
   // ── 大家都看得到的網站：要新增就在這裡加一行 ──
   const SITES=[
@@ -146,18 +151,26 @@ h2{font-family:var(--f-display);font-size:19px;margin:0;font-weight:700}
      svg:'<circle cx="32" cy="32" r="20" fill="#fff"/><circle cx="32" cy="32" r="15" fill="none" stroke="#c99a1e" stroke-width="2.5"/><text x="32" y="40" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="22" fill="#c99a1e">$</text>'},
     {url:'https://visual.narwhallab.workers.dev/', name:'視覺', color:'#39465e',
      svg:'<circle cx="23" cy="24" r="11" fill="#e8b33a"/><path d="M42 12 L54 33 H30z" fill="#e0603f"/><rect x="14" y="38" width="16" height="16" rx="3" fill="#5cb8ae"/><path d="M36 46 a10 10 0 1 0 20 0 a10 10 0 1 0 -20 0" fill="none" stroke="#fff" stroke-width="4"/>'},
-    {url:'https://kuog88.github.io/', name:'國小課業複習遊戲', color:'#d0603a',
+    {other:true, url:'https://kuog88.github.io/', name:'國小課業複習遊戲', color:'#d0603a',
      svg:'<rect x="12" y="14" width="40" height="38" rx="5" fill="#fff"/><path d="M32 20 l3.6 7.4 8.1 1.2-5.9 5.7 1.4 8.1L32 38.6l-7.2 3.8 1.4-8.1-5.9-5.7 8.1-1.2z" fill="#e8b33a"/><rect x="12" y="46" width="40" height="6" rx="2" fill="#f3d2c4"/>'},
-    {url:'https://animalia-live.vercel.app/?cam=lago-maggiore&when=all&animal=ocean', name:'全球動物現場', color:'#2c7a5a',
+    {other:true, url:'https://animalia-live.vercel.app/?cam=lago-maggiore&when=all&animal=ocean', name:'全球動物現場', color:'#2c7a5a',
      svg:'<rect x="8" y="18" width="36" height="28" rx="6" fill="#fff"/><path d="M44 27 l12-7 v24 l-12-7z" fill="#fff"/><ellipse cx="26" cy="36" rx="6" ry="5" fill="#2c7a5a"/><circle cx="18" cy="29" r="2.6" fill="#2c7a5a"/><circle cx="23" cy="25" r="2.6" fill="#2c7a5a"/><circle cx="29" cy="25" r="2.6" fill="#2c7a5a"/><circle cx="34" cy="29" r="2.6" fill="#2c7a5a"/><circle cx="14" cy="14" r="3" fill="#e0603f"/>'},
-    {url:'https://kidsworkbook.app/#/', name:'童樂簿', color:'#e0a21f',
+    {other:true, url:'https://kidsworkbook.app/#/', name:'童樂簿', color:'#e0a21f',
      svg:'<rect x="10" y="32" width="20" height="20" rx="3" fill="#fff"/><rect x="34" y="32" width="20" height="20" rx="3" fill="#fff"/><rect x="22" y="10" width="20" height="20" rx="3" fill="#fff"/><text x="20" y="47" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="14" fill="#3d5a98">A</text><text x="44" y="47" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="14" fill="#d0603a">1</text><text x="32" y="25.5" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="13" fill="#2c7a5a">ㄅ</text>'},
-    {url:'https://leyleyaiink.github.io/kids-chinese/?v=h', name:'國語生字練習', color:'#b8425a',
+    {other:true, url:'https://leyleyaiink.github.io/kids-chinese/?v=h', name:'國語生字練習', color:'#b8425a',
      svg:'<rect x="12" y="12" width="40" height="40" rx="4" fill="#fff"/><path d="M32 14 V50 M14 32 H50" stroke="#f5e3e7" stroke-width="1" stroke-dasharray="3 3"/><text x="32" y="44" text-anchor="middle" font-family="PingFang TC,Noto Sans TC,sans-serif" font-weight="700" font-size="30" fill="#b8425a">中</text>'},
-    {url:'https://shanechen07.github.io/JDPS-SS/', name:'島嶼教學', color:'#2a86a8',
+    {other:true, url:'https://shanechen07.github.io/JDPS-SS/', name:'島嶼教學', color:'#2a86a8',
      svg:'<circle cx="46" cy="16" r="6" fill="#ffd66b"/><path d="M14 40 C20 30 40 30 48 40z" fill="#e8c27a"/><path d="M30 37 C30 28 28 22 25 18" fill="none" stroke="#7a5c1e" stroke-width="3" stroke-linecap="round"/><path d="M25 18 C20 15 14 17 12 21 C17 19 21 19 25 18 C22 13 24 9 29 8 C27 12 26 15 25 18 C30 14 35 15 38 18 C33 17 29 17 25 18" fill="#3aa36b"/><path d="M6 44 q6-4 13 0 t13 0 t13 0 t13 0 V58 H6z" fill="#fff"/>'},
     {url:'https://price-list.narwhallab.workers.dev/', name:'價目表', color:'#8c4a2f',
      svg:'<path d="M12 14 H34 L54 34 L34 54 L12 32z" fill="#fff" stroke-linejoin="round"/><circle cx="21" cy="23" r="4" fill="#8c4a2f"/><text x="35" y="41" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="15" fill="#8c4a2f" transform="rotate(-45 35 36)">$</text>'},
+    {other:true, url:'https://digitalmaster.knsh.com.tw/all/video/e/nature.html?l1=3%E4%B8%8A', name:'康軒自然影片 3上', color:'#3d8b37',
+     svg:'<rect x="8" y="14" width="48" height="34" rx="7" fill="#fff"/><path d="M27 23 L41 31 L27 39z" fill="#3d8b37"/><path d="M44 52 C44 44 50 40 58 40 C58 48 52 52 44 52z" fill="#a7d86d"/><path d="M44 52 L52 45" stroke="#3d8b37" stroke-width="1.5"/>'},
+    {url:'https://eschool-grammar.narwhallab.workers.dev/', name:'英文文法練習', color:'#5a4fa0',
+     svg:'<rect x="10" y="12" width="44" height="40" rx="6" fill="#fff"/><text x="27" y="39" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="22" fill="#5a4fa0">Aa</text><path d="M40 38 l4 4 8-10" fill="none" stroke="#e8b33a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>'},
+    {other:true, url:'https://www.junyiacademy.org/', name:'均一教育平台', color:'#1c8ad6',
+     svg:'<path d="M8 26 L32 14 L56 26 L32 38z" fill="#fff"/><path d="M18 32 v10 c0 4 7 8 14 8 s14-4 14-8 V32 l-14 7z" fill="#fff" opacity=".85"/><path d="M52 28 v14" stroke="#ffd66b" stroke-width="3" stroke-linecap="round"/><circle cx="52" cy="44" r="3" fill="#ffd66b"/>'},
+    {other:true, url:'https://www.yourclass.com.tw/', name:'YourClass', color:'#e0603f',
+     svg:'<rect x="10" y="12" width="44" height="30" rx="4" fill="#fff"/><path d="M18 22 h20 M18 29 h28 M18 36 h14" stroke="#e0603f" stroke-width="3" stroke-linecap="round"/><path d="M26 42 l-4 10 M38 42 l4 10" stroke="#fff" stroke-width="4" stroke-linecap="round"/>'},
   ];
   const KEY='shortcut-links-v1';
   let links=[], editing=false, picking=null;
@@ -211,11 +224,11 @@ h2{font-family:var(--f-display);font-size:19px;margin:0;font-weight:700}
   function withOrigin(l){try{const u=new URL(l.url);return {...l,host:u.hostname,origin:u.origin}}catch(e){return l}}
 
   function render(){
-    shared.textContent=''; grid.textContent='';
+    shared.textContent=''; others.textContent=''; grid.textContent='';
     SITES.map(withOrigin).forEach(site=>{
       const cell=document.createElement('div'); cell.className='cell';
       cell.appendChild(tile(site,()=>svgIcon(site)));
-      shared.appendChild(cell);
+      (site.other?others:shared).appendChild(cell);
     });
     mine.hidden=links.length===0;
     editBtn.hidden=links.length===0 && !editing;
