@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>我的網頁</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#e9eef0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="我的網頁">
@@ -15,101 +20,146 @@
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 body{margin:0}
-:root{padding-top:env(safe-area-inset-top,0px)}
-/* Layout: a single iPad-style home screen — icon grid on top, a docked "add" bar at the bottom. */
+/* Layout: pastel gradient sky with drifting stars and clouds; one frosted white card per category; a floating pill-shaped add bar. */
 :root{
-  --bg:#e9eef0; --bg2:#dfe7e6; --panel:#ffffff; --fg:#1d2a2e; --muted:#5f7074;
-  --line:#cdd8d9; --accent:#1f6f6a; --accent-fg:#ffffff; --danger:#b3412e;
-  --shadow:0 1px 2px rgba(20,40,44,.08),0 6px 18px rgba(20,40,44,.08);
+  --bg-a:#fdf0e2; --bg-b:#fbe6e8; --bg-c:#e2edf8; --bg-d:#f9dcdc;
+  --card:rgba(255,255,255,.78); --card-line:rgba(238,176,150,.55);
+  --fg:#22294a; --muted:#7a7f98; --line:#ead9d2; --field:#fbf6f3;
+  --go:#3fb5b9; --go-2:#79cfd0; --on-go:#ffffff; --danger:#e0573f; --mine:#9b7be0;
+  --h-game:#e2603a; --h-learn:#2f9467; --h-eye:#3a7fc4; --h-other:#8d6bd6;
+  --deco-1:#b7a6ee; --deco-2:#8ec3ea; --deco-3:#f6b9a0; --cloud:#ffffff;
+  --card-shadow:0 2px 4px rgba(150,110,100,.06),0 12px 30px rgba(150,110,100,.10);
   --f-display:"Huninn","Chiron GoRound TC","Yuanti TC","PingFang TC",system-ui,sans-serif;
   --f-body:"Huninn","Chiron GoRound TC","Yuanti TC","PingFang TC",-apple-system,system-ui,sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#141b1d; --bg2:#1a2427; --panel:#1f2a2d; --fg:#e6eeee; --muted:#95a7aa;
-  --line:#2f3e41; --accent:#5cb8ae; --accent-fg:#0f1a1b; --danger:#ec7d69;
-  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25); color-scheme:dark}}
+  --bg-a:#251c38; --bg-b:#2c1f33; --bg-c:#16263f; --bg-d:#311d2c;
+  --card:rgba(32,30,56,.78); --card-line:rgba(190,140,170,.35);
+  --fg:#f1ecfa; --muted:#a9a3c2; --line:#3b3556; --field:#2a2745;
+  --go:#3fb5b9; --go-2:#5fc6c7; --on-go:#0f1f24; --danger:#f0826d; --mine:#b59bf0;
+  --h-game:#ff9a72; --h-learn:#6fd3a0; --h-eye:#7ab8f0; --h-other:#b7a0f4;
+  --deco-1:#7d6bc4; --deco-2:#4f86b8; --deco-3:#c4806a; --cloud:rgba(255,255,255,.12);
+  --card-shadow:0 2px 4px rgba(0,0,0,.25),0 12px 30px rgba(0,0,0,.3); color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#141b1d; --bg2:#1a2427; --panel:#1f2a2d; --fg:#e6eeee; --muted:#95a7aa;
-  --line:#2f3e41; --accent:#5cb8ae; --accent-fg:#0f1a1b; --danger:#ec7d69;
-  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25); color-scheme:dark}
+  --bg-a:#251c38; --bg-b:#2c1f33; --bg-c:#16263f; --bg-d:#311d2c;
+  --card:rgba(32,30,56,.78); --card-line:rgba(190,140,170,.35);
+  --fg:#f1ecfa; --muted:#a9a3c2; --line:#3b3556; --field:#2a2745;
+  --go:#3fb5b9; --go-2:#5fc6c7; --on-go:#0f1f24; --danger:#f0826d; --mine:#b59bf0;
+  --h-game:#ff9a72; --h-learn:#6fd3a0; --h-eye:#7ab8f0; --h-other:#b7a0f4;
+  --deco-1:#7d6bc4; --deco-2:#4f86b8; --deco-3:#c4806a; --cloud:rgba(255,255,255,.12);
+  --card-shadow:0 2px 4px rgba(0,0,0,.25),0 12px 30px rgba(0,0,0,.3); color-scheme:dark}
 
 html,body{min-height:100%}
-body{background:radial-gradient(120% 80% at 20% 0%,var(--bg2),var(--bg) 60%) fixed,var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;-webkit-tap-highlight-color:transparent}
-.wrap{max-width:960px;margin:0 auto;padding-inline:20px;padding-block:28px calc(var(--dock-h,150px) + 24px);display:flex;flex-direction:column;gap:22px}
-header{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
-h1{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,4vw,34px);margin:0;letter-spacing:.02em;text-wrap:balance}
-.sub{color:var(--muted);font-size:14px;margin-top:4px}
-.btn{font:inherit;font-size:15px;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:999px;padding:8px 16px;cursor:pointer}
-.btn:focus-visible,input:focus-visible,.tile:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-.btn.on{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+body{
+  color:var(--fg);font-family:var(--f-body);font-size:16px;-webkit-tap-highlight-color:transparent;
+  background:var(--bg-a);
+}
+.deco{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;
+  background:
+    radial-gradient(60% 50% at 0% 100%, var(--bg-d), transparent 70%),
+    radial-gradient(55% 60% at 100% 10%, var(--bg-c), transparent 70%),
+    linear-gradient(120deg, var(--bg-a) 0%, var(--bg-b) 50%, var(--bg-c) 100%)}
+.deco svg{position:absolute}
+.star4{fill:var(--deco-1)} .star5{fill:var(--deco-2)} .spark{fill:var(--deco-3)} .cloud{fill:var(--cloud)} .dot{fill:var(--deco-1);opacity:.6}
+@media (prefers-reduced-motion:no-preference){.deco .tw{animation:tw 3.6s ease-in-out infinite alternate}.deco .tw2{animation:tw 4.4s ease-in-out infinite alternate-reverse}}
+@keyframes tw{from{opacity:.45;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:26px 14px}
-.cell{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;min-width:0}
-.tile{display:flex;flex-direction:column;align-items:center;gap:8px;text-decoration:none;color:var(--fg);min-width:0;width:100%;border-radius:18px}
-.icon{width:76px;height:76px;border-radius:19px;display:grid;place-items:center;overflow:hidden;box-shadow:var(--shadow);background:var(--panel);transition:transform .12s ease}
+.wrap{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding-inline:16px;padding-block:calc(env(safe-area-inset-top,0px) + 28px) calc(var(--dock-h,150px) + 28px);display:flex;flex-direction:column;gap:18px}
+
+.group{--h:var(--fg);background:var(--card);border:1.5px solid var(--card-line);border-radius:28px;box-shadow:var(--card-shadow);padding:18px 18px 22px;display:flex;flex-direction:column;gap:14px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.g-game{--h:var(--h-game)} .g-learn{--h:var(--h-learn)} .g-eye{--h:var(--h-eye)} .g-other{--h:var(--h-other)} #mine{--h:var(--mine)}
+.group-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-inline:6px}
+h2{font-family:var(--f-display);font-size:25px;margin:0;font-weight:400;color:var(--h);display:flex;align-items:center;gap:8px;letter-spacing:.06em}
+.h-ico{width:30px;height:30px;flex:none}
+.h-ico *{fill:none;stroke:var(--h);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.h-ico .fill{fill:color-mix(in srgb,var(--h) 22%,transparent)}
+.note{font-family:var(--f-body);font-size:12.5px;color:var(--muted);letter-spacing:.02em}
+
+.btn{font:inherit;font-size:15px;border:1.5px solid var(--card-line);background:var(--card);color:var(--fg);border-radius:999px;padding:7px 16px;cursor:pointer}
+.btn:focus-visible,input:focus-visible,.tile:focus-visible,.dock button:focus-visible{outline:3px solid var(--go);outline-offset:2px}
+.btn.on{background:var(--mine);color:#fff;border-color:var(--mine)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:20px 8px}
+.cell{position:relative;display:flex;flex-direction:column;align-items:center;min-width:0}
+.tile{display:flex;flex-direction:column;align-items:center;gap:10px;text-decoration:none;color:var(--fg);min-width:0;width:100%;border-radius:20px;padding-block:6px 2px}
+.icon{--glow:#999;position:relative;width:78px;height:78px;border-radius:24px;display:grid;place-items:center;overflow:hidden;background:#fff;
+  box-shadow:0 10px 18px -6px color-mix(in srgb,var(--glow) 65%,transparent),0 2px 4px rgba(0,0,0,.08),inset 0 -4px 0 rgba(0,0,0,.08);
+  transition:transform .18s cubic-bezier(.3,1.6,.5,1)}
+.icon::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(170deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,.12) 38%,rgba(255,255,255,0) 55%,rgba(0,0,0,.06) 100%)}
 .icon img{width:100%;height:100%;object-fit:cover}
 .icon.fav img{width:62%;height:62%;object-fit:contain}
 .mono{font-family:var(--f-display);font-weight:700;font-size:34px;color:#fff;width:100%;height:100%;display:grid;place-items:center;text-transform:uppercase}
-.tile:active .icon{transform:scale(.93)}
-.label{font-size:13.5px;line-height:1.3;text-align:center;max-width:100%;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;word-break:break-word}
+.mono svg{display:block;width:100%;height:100%;text-transform:none}
+@media (hover:hover){.tile:hover .icon{transform:translateY(-4px) scale(1.04)}}
+.tile:active .icon{transform:scale(.92)}
+.label{font-size:15px;line-height:1.3;text-align:center;max-width:100%;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;word-break:break-word;padding-inline:2px;letter-spacing:.03em}
 .editing .icon{animation:jiggle .3s ease-in-out infinite alternate}
 @keyframes jiggle{from{transform:rotate(-1.6deg)}to{transform:rotate(1.6deg)}}
-@media (prefers-reduced-motion:reduce){.editing .icon{animation:none}}
-.x,.pic{position:absolute;top:-6px;width:28px;height:28px;border-radius:50%;border:2px solid var(--bg);display:grid;place-items:center;cursor:pointer;font-size:15px;line-height:1;padding:0}
+@media (prefers-reduced-motion:reduce){.editing .icon{animation:none}.icon{transition:none}}
+.x,.pic{position:absolute;top:-2px;width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:grid;place-items:center;cursor:pointer;font-size:15px;line-height:1;padding:0;z-index:2}
 .x{left:calc(50% - 50px);background:var(--danger);color:#fff}
-.pic{right:calc(50% - 50px);background:var(--accent);color:var(--accent-fg)}
+.pic{right:calc(50% - 50px);background:var(--mine);color:#fff}
 
-.group{display:flex;flex-direction:column;gap:16px}
-.group-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-h2{font-family:var(--f-display);font-size:19px;margin:0;font-weight:700}
-.note{font-family:var(--f-body);font-size:12.5px;font-weight:400;color:var(--muted);margin-left:6px;letter-spacing:.04em}
-.mono svg{display:block;width:100%;height:100%;text-transform:none}
-.empty{border:2px dashed var(--line);border-radius:20px;padding:36px 20px;text-align:center;color:var(--muted);line-height:1.7}
-.empty strong{color:var(--fg);font-family:var(--f-display);font-size:20px;display:block;margin-bottom:4px}
-
-.dock{position:fixed;left:0;right:0;bottom:0;padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px));background:color-mix(in srgb,var(--panel) 88%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line)}
-.dock form{max-width:960px;margin:0 auto;display:flex;gap:10px;flex-wrap:wrap}
-.dock input{flex:1 1 200px;min-width:0;font:inherit;font-size:17px;padding:12px 16px;border-radius:14px;border:1px solid var(--line);background:var(--bg);color:var(--fg)}
-.dock input#name{flex:0 1 180px}
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:5;padding:0 14px calc(14px + env(safe-area-inset-bottom,0px));pointer-events:none}
+.dock-in{pointer-events:auto;max-width:760px;margin:0 auto;background:var(--card);border:1.5px solid var(--card-line);border-radius:999px;box-shadow:var(--card-shadow);padding:8px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.dock form{display:flex;gap:8px;flex-wrap:wrap}
+.dock input{flex:1 1 200px;min-width:0;font:inherit;font-size:17px;padding:11px 18px;border-radius:999px;border:1.5px solid var(--line);background:var(--field);color:var(--fg)}
+.dock input::placeholder{color:var(--muted)}
+.dock input#name{flex:0 1 190px}
+.dock button{font:inherit;font-size:17px;padding:11px 26px;border-radius:999px;border:0;background:linear-gradient(180deg,var(--go-2),var(--go));color:var(--on-go);cursor:pointer;letter-spacing:.12em;box-shadow:0 6px 14px -6px var(--go)}
+.dock button:disabled{opacity:.5}
+.msg{max-width:760px;margin:6px auto 0;font-size:13px;color:var(--muted);text-align:center;min-height:0}
+.msg:empty{display:none}
+.msg.err{color:var(--danger)}
 @media (max-width:600px){
-  .dock{padding-top:10px}
-  .dock form{gap:8px}
-  .dock input{font-size:16px;padding:10px 12px}
+  .wrap{gap:14px;padding-top:calc(env(safe-area-inset-top,0px) + 18px)}
+  .group{padding:16px 10px 18px;border-radius:24px}
+  h2{font-size:22px}
+  .grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 4px}
+  .icon{width:72px;height:72px;border-radius:22px}
+  .label{font-size:14px}
+  .dock-in{border-radius:26px}
+  .dock input{font-size:16px;padding:10px 14px}
   .dock input#url{flex:1 1 100%}
   .dock input#name{flex:1 1 0}
-  .dock button{padding:10px 18px}
+  .dock button{padding:10px 20px}
 }
-.dock button{font:inherit;font-size:17px;font-weight:700;padding:12px 22px;border-radius:14px;border:0;background:var(--accent);color:var(--accent-fg);cursor:pointer}
-.dock button:disabled{opacity:.5}
-.msg{max-width:960px;margin:6px auto 0;font-size:13px;color:var(--muted);min-height:1em}
-.msg.err{color:var(--danger)}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div>
-      <h1>我的網頁</h1>
-    </div>
-  </header>
-
-  <section class="group" aria-labelledby="h-game">
-    <h2 id="h-game">遊戲</h2>
+<div class="deco" aria-hidden="true">
+  <svg class="tw" style="left:4%;top:3%" width="34" height="34" viewBox="0 0 24 24"><path class="star4" d="M12 0 C13 8 16 11 24 12 C16 13 13 16 12 24 C11 16 8 13 0 12 C8 11 11 8 12 0z"/></svg>
+  <svg style="left:2%;top:9%" width="12" height="12" viewBox="0 0 10 10"><circle class="dot" cx="5" cy="5" r="5"/></svg>
+  <svg class="tw2" style="left:3%;top:15%" width="44" height="44" viewBox="0 0 24 24"><path class="star5" d="M12 1.5l3 6.6 7.2.8-5.4 4.9 1.5 7.1L12 17.3 5.7 20.9l1.5-7.1L1.8 8.9 9 8.1z" stroke-linejoin="round"/></svg>
+  <svg style="right:3%;top:2%" width="120" height="60" viewBox="0 0 120 60"><path class="cloud" d="M22 52 a18 18 0 0 1 4-35 a24 24 0 0 1 44-6 a20 20 0 0 1 32 14 a14 14 0 0 1-2 27z"/></svg>
+  <svg style="right:16%;top:1%" width="80" height="40" viewBox="0 0 120 60"><path class="cloud" d="M22 52 a18 18 0 0 1 4-35 a24 24 0 0 1 44-6 a20 20 0 0 1 32 14 a14 14 0 0 1-2 27z"/></svg>
+  <svg class="tw" style="right:4%;top:18%" width="36" height="36" viewBox="0 0 24 24"><path class="spark" d="M12 0 C13 8 16 11 24 12 C16 13 13 16 12 24 C11 16 8 13 0 12 C8 11 11 8 12 0z"/></svg>
+  <svg class="tw2" style="right:5%;bottom:22%" width="26" height="26" viewBox="0 0 24 24"><path class="spark" d="M12 0 C13 8 16 11 24 12 C16 13 13 16 12 24 C11 16 8 13 0 12 C8 11 11 8 12 0z"/></svg>
+  <svg class="tw" style="right:7%;bottom:12%" width="54" height="54" viewBox="0 0 24 24"><path class="spark" d="M12 0 C13 8 16 11 24 12 C16 13 13 16 12 24 C11 16 8 13 0 12 C8 11 11 8 12 0z"/></svg>
+  <svg style="right:4%;bottom:9%" width="12" height="12" viewBox="0 0 10 10"><circle class="dot" cx="5" cy="5" r="5"/></svg>
+  <svg class="tw2" style="left:3%;bottom:20%" width="30" height="30" viewBox="0 0 24 24"><path class="star4" d="M12 0 C13 8 16 11 24 12 C16 13 13 16 12 24 C11 16 8 13 0 12 C8 11 11 8 12 0z"/></svg>
+  <svg class="tw" style="left:5%;bottom:11%" width="40" height="40" viewBox="0 0 24 24"><path class="star5" d="M12 1.5l3 6.6 7.2.8-5.4 4.9 1.5 7.1L12 17.3 5.7 20.9l1.5-7.1L1.8 8.9 9 8.1z"/></svg>
+  <svg style="left:8%;bottom:4%" width="100" height="50" viewBox="0 0 120 60"><path class="cloud" d="M22 52 a18 18 0 0 1 4-35 a24 24 0 0 1 44-6 a20 20 0 0 1 32 14 a14 14 0 0 1-2 27z"/></svg>
+</div>
+<main class="wrap">
+  <section class="group g-game" aria-labelledby="h-game">
+    <div class="group-head"><h2 id="h-game">遊戲 <svg class="h-ico" viewBox="0 0 32 32" aria-hidden="true"><path class="fill" d="M6 9h6a3 3 0 1 1 6 0h6v6a3 3 0 1 1 0 6v6h-6a3 3 0 1 0-6 0H6v-6a3 3 0 1 0 0-6z"/></svg></h2></div>
     <div id="g-game" class="grid"></div>
   </section>
 
-  <section class="group" aria-labelledby="h-eye">
-    <h2 id="h-eye">眼睛相關</h2>
-    <div id="g-eye" class="grid"></div>
-  </section>
-
-  <section class="group" aria-labelledby="h-learn">
-    <h2 id="h-learn">學習</h2>
+  <section class="group g-learn" aria-labelledby="h-learn">
+    <div class="group-head"><h2 id="h-learn">學習 <svg class="h-ico" viewBox="0 0 32 32" aria-hidden="true"><path class="fill" d="M16 9c-3-2.5-7-3-11-2.5v17c4-.5 8 0 11 2.5c3-2.5 7-3 11-2.5v-17c-4-.5-8 0-11 2.5z"/><path d="M16 9v17M8 11.5h4M8 15h4M20 11.5h4M20 15h4"/></svg></h2></div>
     <div id="g-learn" class="grid"></div>
   </section>
 
-  <section class="group" aria-labelledby="h-other">
-    <h2 id="h-other">其他</h2>
+  <section class="group g-eye" aria-labelledby="h-eye">
+    <div class="group-head"><h2 id="h-eye">眼睛相關 <svg class="h-ico" viewBox="0 0 32 32" aria-hidden="true"><path class="fill" d="M3 17c4-6.5 9-9 13-9s9 2.5 13 9c-4 6.5-9 9-13 9s-9-2.5-13-9z"/><circle cx="16" cy="17" r="4.2"/><path d="M16 3v3M8.5 5l1.6 2.6M23.5 5l-1.6 2.6M3.5 9.5l2.4 1.8M28.5 9.5l-2.4 1.8"/></svg></h2></div>
+    <div id="g-eye" class="grid"></div>
+  </section>
+
+  <section class="group g-other" aria-labelledby="h-other">
+    <div class="group-head"><h2 id="h-other">其他 <svg class="h-ico" viewBox="0 0 32 32" aria-hidden="true"><path class="fill" d="M16 4l3.4 7.4 8.1.9-6 5.5 1.7 8L16 21.7 8.8 25.8l1.7-8-6-5.5 8.1-.9z"/></svg></h2></div>
     <div id="others" class="grid"></div>
   </section>
 
@@ -120,16 +170,16 @@ h2{font-family:var(--f-display);font-size:19px;margin:0;font-weight:700}
     </div>
     <div id="grid" class="grid"></div>
   </section>
-</div>
+</main>
 
-<div class="dock">
+<div class="dock"><div class="dock-in">
   <form id="addForm" autocomplete="off">
     <input id="url" type="text" inputmode="url" autocapitalize="off" spellcheck="false" placeholder="輸入網址，例如 youtube.com" aria-label="網址" required>
     <input id="name" type="text" placeholder="名稱（可不填）" aria-label="名稱">
     <button id="addBtn" type="submit">加入</button>
   </form>
   <div class="msg" id="msg" role="status"></div>
-</div>
+</div></div>
 <input id="picker" type="file" accept="image/*" hidden>
 
 <script>
@@ -181,7 +231,7 @@ h2{font-family:var(--f-display);font-size:19px;margin:0;font-weight:700}
      svg:'<path d="M8 26 L32 14 L56 26 L32 38z" fill="#fff"/><path d="M18 32 v10 c0 4 7 8 14 8 s14-4 14-8 V32 l-14 7z" fill="#fff" opacity=".85"/><path d="M52 28 v14" stroke="#ffd66b" stroke-width="3" stroke-linecap="round"/><circle cx="52" cy="44" r="3" fill="#ffd66b"/>'},
     {other:true, url:'https://www.yourclass.com.tw/', name:'YourClass', color:'#e0603f',
      svg:'<rect x="10" y="12" width="44" height="30" rx="4" fill="#fff"/><path d="M18 22 h20 M18 29 h28 M18 36 h14" stroke="#e0603f" stroke-width="3" stroke-linecap="round"/><path d="M26 42 l-4 10 M38 42 l4 10" stroke="#fff" stroke-width="4" stroke-linecap="round"/>'},
-    {group:'game', url:'https://ring.narwhallab.workers.dev/', name:'套圈圈', color:'#c2457a',
+    {group:'game', url:'https://ring.narwhallab.workers.dev/', name:'解圈圈', color:'#c2457a',
      svg:'<rect x="30" y="16" width="4" height="34" rx="2" fill="#fff"/><ellipse cx="32" cy="50" rx="18" ry="5" fill="none" stroke="#ffd66b" stroke-width="4"/><ellipse cx="32" cy="38" rx="13" ry="4" fill="none" stroke="#fff" stroke-width="4"/><ellipse cx="32" cy="27" rx="9" ry="3" fill="none" stroke="#7fd3c6" stroke-width="3.5"/>'},
     {group:'game', url:'https://car-racing.narwhallab.workers.dev/', name:'賽車', color:'#c23b2e',
      svg:'<path d="M10 40 v-6 l6-2 6-9 h18 l8 9 6 2 v6z" fill="#fff"/><path d="M25 25 h7 v7 h-11z M35 25 h4 l6 7 h-10z" fill="#c23b2e" opacity=".55"/><circle cx="20" cy="42" r="5.5" fill="#222"/><circle cx="44" cy="42" r="5.5" fill="#222"/><circle cx="20" cy="42" r="2" fill="#ddd"/><circle cx="44" cy="42" r="2" fill="#ddd"/><path d="M4 30 h6 M2 36 h6" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".7"/>'},
@@ -223,6 +273,7 @@ h2{font-family:var(--f-display);font-size:19px;margin:0;font-weight:700}
   // Try the site's own icon first, then Google's icon service, then our drawn fallback
   function iconFor(l,fallback){
     const ic=document.createElement('div'); ic.className='icon';
+    ic.style.setProperty('--glow', l.color || hueFor(l.host||l.url));
     const srcs=l.icon?[l.icon]:[l.origin+'/favicon.ico',faviconUrl(l.host)];
     const img=document.createElement('img'); img.alt='';
     let i=0;
